@@ -15,32 +15,36 @@ public class TimeOfDay {
 		return minutesSinceMidnight % 60;
 	}
 	
+	public TimeOfDay(int hours, int minutes) {
+		if (!(0 <= hours && hours <= 23))
+			throw new IllegalArgumentException("hours is out of range");
+		if (!(0 <= minutes && minutes <= 59))
+			throw new IllegalArgumentException("minutes is out of range");
+		this.minutesSinceMidnight = hours * 60 + minutes;
+	}
+	
 	/**
 	 * @post This object's hours equal the given hours
-	 *     | getHours() == value
+	 *     | result.getHours() == value
 	 * @post This object's minutes have remained unchanged
-	 *     | getMinutes() == old(getMinutes())
+	 *     | result.getMinutes() == getMinutes()
 	 * @throws IllegalArgumentException if the given value is not between 0 and 23
 	 *    | !(0 <= value && value <= 23)
 	 */
-	public void setHours(int value) {
-		if (!(0 <= value && value <= 23))
-			throw new IllegalArgumentException("value is out of range");
-		this.minutesSinceMidnight = getMinutes() + value * 60;
+	public TimeOfDay withHours(int value) {
+		return new TimeOfDay(value, getMinutes());
 	}
 	
 	/**
 	 * @post This object's minutes equal the given minutes
-	 *     | getMinutes() == value
+	 *     | result.getMinutes() == value
 	 * @post This object's hours have remained unchanged
-	 *     | getHours() == old(getHours())
+	 *     | result.getHours() == getHours()
 	 *     
 	 * @throws IllegalArgumentException if the given value is not between 0 and 59
 	 *    | !(0 <= value && value <= 59)
 	 */
-	public void setMinutes(int value) {
-		if (!(0 <= value && value <= 59))
-			throw new IllegalArgumentException("value is out of range");
-		this.minutesSinceMidnight = getHours() * 60 + value;
+	public TimeOfDay withMinutes(int value) {
+		return new TimeOfDay(getHours(), value);
 	}
 }
